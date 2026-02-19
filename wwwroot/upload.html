@@ -1,0 +1,115 @@
+﻿<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Atualizar Foto de Perfil</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 40px;
+        }
+
+        .container {
+            max-width: 400px;
+            margin: auto;
+            text-align: center;
+        }
+
+        .avatar {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid #ddd;
+            margin-bottom: 20px;
+        }
+
+        button {
+            padding: 8px 16px;
+            cursor: pointer;
+        }
+
+        #msg {
+            margin-top: 15px;
+            color: green;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+
+    <h2>Atualizar Foto de Perfil</h2>
+
+    <!-- Foto atual -->
+    <img id="avatarAtual"
+         class="avatar"
+         src="/uploads/profile/default-avatar.png"
+         alt="Foto de Perfil">
+
+    <br>
+
+    <!-- Selecionar nova foto -->
+    <input type="file" id="fotoInput" accept="image/*">
+
+    <br><br>
+
+    <button onclick="enviarFoto()">Salvar Foto</button>
+
+    <p id="msg"></p>
+
+</div>
+
+<script>
+document.addEventListener("DOMContentLoaded", carregarFotoAtual);
+
+async function carregarFotoAtual() {
+    try {
+        const response = await fetch("/Profile/MinhaFoto");
+
+        if (!response.ok) return;
+
+        const foto = await response.text();
+
+        if (foto) {
+            document.getElementById("avatarAtual").src = foto;
+        }
+    }
+    catch (e) {
+        console.error(e);
+    }
+}
+
+async function enviarFoto() {
+
+    const input = document.getElementById("fotoInput");
+
+    if (!input.files.length) {
+        alert("Selecione uma imagem.");
+        return;
+    }
+
+    const formData = new FormData();
+    formData.append("file", input.files[0]);
+
+    const response = await fetch("/Profile/UploadFoto", {
+        method: "POST",
+        body: formData
+    });
+
+    if (!response.ok) {
+        alert("Erro ao enviar imagem.");
+        return;
+    }
+
+    const novaFoto = await response.text();
+
+    document.getElementById("avatarAtual").src = novaFoto;
+    document.getElementById("msg").innerText =
+        "Foto atualizada com sucesso!";
+}
+</script>
+
+</body>
+</html>

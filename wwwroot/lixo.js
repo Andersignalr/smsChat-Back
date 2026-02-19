@@ -1,3 +1,28 @@
+﻿document.addEventListener("DOMContentLoaded", function () {
+
+    const input = document.getElementById("fotoInput");
+
+    if (!input) return;
+
+    const preview = document.createElement("img");
+    preview.style.width = "100px";
+    preview.style.display = "block";
+    preview.style.marginTop = "10px";
+
+    input.addEventListener("change", function () {
+
+        if (!this.files.length) return;
+
+        const file = this.files[0];
+        preview.src = URL.createObjectURL(file);
+
+        input.parentNode.appendChild(preview);
+    });
+
+});
+
+//------------------
+
 const inputMessage = document.getElementById("message-input");
 
 const contactsArea = document.getElementById("contacts-area");
@@ -5,6 +30,8 @@ const contactsArea = document.getElementById("contacts-area");
 let usuarioSelecionadoId = null;
 
 let meuUserId = null;
+let usuariosOnlineCache = [];
+
 
 document.querySelectorAll(".contact-area")
     .forEach(contato => {
@@ -31,72 +58,13 @@ connection.on("ReceberMensagem", (dados) => {
 
 connection.on("UsuariosOnline", (usuarios) => {
 
-    console.log(meuUserId);
-
-    if (!meuUserId) return;
-
     console.log("Online:", usuarios);
 
-    const status = document.querySelector(".head-contacts-area .status");
-    status.innerText = usuarios.length + " online";
+    usuariosOnlineCache = usuarios; // 🔥 guarda
 
-    const lista = document.querySelector(".contacts-area");
-    lista.innerHTML = "";
-
-    usuarios.forEach(user => {
-                
-        const div = document.createElement("div");
-        div.className = "contact-area";
-
-        if (user.userId === meuUserId) return;
-
-        // 🔥 Guardando informação escondida
-        div.dataset.userid = user.userId;
-        div.dataset.nome = user.nome;
-
-        div.innerHTML = `
-            <div class="contact-image">
-                <img class="avatar" src="${user.foto ?? '/img/default-avatar.png'}">
-            </div>
-            <div class="contact-info">
-                <div class="name">${user.nome}</div>
-                <div class="status" style="color: green;">online</div>
-            </div>
-        `;
-
-
-        // 🔥 Evento de clique
-        div.addEventListener("click", function () {
-
-            usuarioSelecionadoId = this.dataset.userid;
-
-            //limpa lista de mensagens
-            document.querySelector(".right-center").innerHTML = "";
-
-            // Atualiza o topo da conversa
-            document.querySelector(".right-head .name").innerText =
-                this.dataset.nome;
-
-            document.querySelector(".right-head .status").innerText =
-                "online";
-
-            // Remove seleção anterior
-            document.querySelectorAll(".contact-area")
-                .forEach(c => c.classList.remove("selected"));
-
-            // Marca como selecionado
-            this.classList.add("selected");
-
-            const badge = this.querySelector(".badge");
-            if (badge) badge.remove();
-
-            connection.invoke("CarregarMensagens", usuarioSelecionadoId);
-
-        });
-
-        lista.appendChild(div);
-    });
+    renderizarUsuarios(); // 🔥 tenta renderizar
 });
+
 
 
 
@@ -177,21 +145,9 @@ connection.on("MeusDados", (eu) => {
 
     meuUserId = eu.userId;
 
-    const leftBottom = document.querySelector(".left-bottom");
+    renderizarUsuarios(); // 🔥 tenta renderizar agora
 
-    leftBottom.innerHTML = `
-        <div class="contact-image">
-            <img class="avatar"
-                 src="${eu.foto ? eu.foto : '/images/default-avatar.png'}">
-        </div>
-        <div class="contact-info">
-            <div class="name">
-                ${eu.nome}
-            </div>
-        </div>
-    `;
 });
-
 
 
 
@@ -276,3 +232,37 @@ function moverParaTopo(userId) {
     lista.prepend(contato);
 }
 
+function renderizarUsuarios() {
+
+    if (!meuUserId) return;
+
+    const status = document.querySelector(".head-contacts-area .status");
+    status.innerText = usuariosOnlineCache.length + " online";
+
+    const lista = document.querySelector(".contacts-area");
+    lista.innerHTML = "";
+
+    usuariosOnlineCache.forEach(user => {
+
+        if (user.userId === meuUserId) return;
+
+        const div = document.createElement("div");
+        div.className = "contact-area";
+
+        div.dataset.userid = user.userId;
+        div.dataset.nome = user.nome;
+
+        div.innerHTML = `
+            <div class="contact-image">
+                <img class="avatar"
+                     src="${user.foto ?? '/img/default-avatar.png'}">
+            </div>
+            <div class="contact-info">
+                <div class="name">${user.nome}</div>
+                <div class="status" style="color: green;">online</div>
+            </div>
+        `;
+
+        lista.appendChild(div);
+    });
+}

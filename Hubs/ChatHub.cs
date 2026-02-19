@@ -36,19 +36,18 @@ public class ChatHub : Hub
             .Add(Context.ConnectionId);
 
         await Clients.All.SendAsync("UsuariosOnline",
-            UserTracker.OnlineUsers.Select(u => new 
+            UserTracker.OnlineUsers.Select(u => new
             {
                 UserId = u.Key,
-                Nome = u.Value.Nome
+                Nome = u.Value.Nome,
+                Foto = _context.Users
+                    .Where(x => x.Id == u.Key)
+                    .Select(x => x.FotoPerfil)
+                    .FirstOrDefault()
             }));
-
-        await Clients.Caller.SendAsync("MeuUserId", userId);
-
 
         await base.OnConnectedAsync();
     }
-
-
 
     public override async Task OnDisconnectedAsync(Exception? exception)
     {
@@ -70,8 +69,13 @@ public class ChatHub : Hub
             UserTracker.OnlineUsers.Select(u => new
             {
                 UserId = u.Key,
-                Nome = u.Value.Nome
+                Nome = u.Value.Nome,
+                Foto = _context.Users
+                    .Where(x => x.Id == u.Key)
+                    .Select(x => x.FotoPerfil)
+                    .FirstOrDefault()
             }));
+
 
 
         await base.OnDisconnectedAsync(exception);
@@ -158,6 +162,30 @@ public class ChatHub : Hub
             .ToListAsync();
 
         await Clients.Caller.SendAsync("MensagensCarregadas", mensagens);
+    }
+
+    public async Task ObterMeusDados()
+    {
+        var userId = Context.UserIdentifier!;
+
+        var user = await _context.Users
+            .Where(x => x.Id == userId)
+            .Select(x => new
+            {
+                x.Id,
+                x.Nome,
+                x.FotoPerfil
+            })
+            .FirstOrDefaultAsync();
+
+        if (user == null) return;
+
+        await Clients.Caller.SendAsync("MeusDados", new
+        {
+            userId = user.Id,
+            nome = user.Nome,
+            foto = user.FotoPerfil
+        });
     }
 
 

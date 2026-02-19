@@ -1,9 +1,10 @@
-*{
+* {
     box-sizing: border-box;
     margin: 0;
     padding: 0;
 }
-body{
+
+body {
     box-sizing: border-box;
     margin: 0;
     background-color: rgb(79, 78, 80);
@@ -16,63 +17,62 @@ body{
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
-.container{
+.container {
     height: 600px;
     width: 900px;
     border-radius: 10px;
     display: flex;
 }
 
-.left{
-    width: 300px;
+.left {
+    background-color: rgb(111, 111, 143);
+    width: 40%;
     border-radius: 10px 0 0 10px;
+    display: flex;
+    flex-direction: column;
 }
 
-.head-contacts-area{
+.head-contacts-area {
     background-color: rgb(111, 111, 143);
     height: 18%;
     padding: 10px;
     border-radius: 10px 0 0 0;
     display: flex;
     align-items: center;
-    gap:10px;
+    gap: 10px;
     color: white;
 }
 
-.head-contacts-area i {
-    font-size: 3rem;
-    color: rgb(233, 227, 243);
-}
+    .head-contacts-area i {
+        font-size: 3rem;
+        color: rgb(233, 227, 243);
+    }
 
-.status{
+.status {
     color: rgb(197, 197, 211);
     font-size: 0.8rem;
 }
 
-.contacts-area{
+.contacts-area {
     background-color: rgb(202, 197, 207);
-    height: 82%;
+    flex: 1;
     display: flex;
     justify-content: start;
     flex-direction: column;
-    border-radius: 0 0 0 10px;
 }
 
-.contact-area{
+.contact-area {
     padding: 15px;
     display: flex;
     gap: 8px;
 }
 
-.contact-area:hover{
-    background-color: rgb(172, 168, 177);
-}
+    .contact-area:hover {
+        background-color: rgb(172, 168, 177);
+    }
 
-.contact-area.selected{
-    background-color: rgb(172, 168, 177);
-} 
 
-.contact-image{
+.contact-image {
     border-radius: 100px;
     overflow: hidden;
     display: flex;
@@ -80,13 +80,25 @@ body{
     height: 50px;
 }
 
-
-.right{
-    flex: 1;
-    border-radius: 0 10px 10px 0;
+.left-bottom {
+    background-color: transparent;
+    border-radius: 0 0 0 10px;
+    box-sizing: border-box;
+    padding: 11px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: white;
 }
 
-.right-head{
+
+.right {
+    width: 60%;
+    border-radius: 0 10px 10px 0;
+    background-color: rgb(184, 184, 184);
+}
+
+.right-head {
     height: 18%;
     background-color: rgb(93, 67, 128);
     border-radius: 0 10px 0 0;
@@ -102,12 +114,12 @@ body{
     gap: 8px;
 }
 
-.buttons{
+.buttons {
     display: flex;
     gap: 30px;
 }
 
-.right-bottom{
+.right-bottom {
     height: 12%;
     background-color: rgb(211, 211, 211);
     display: flex;
@@ -117,20 +129,17 @@ body{
     border-radius: 0 0 10px 0;
 }
 
-.right-bottom input{
-    appearance: none;
-    border: 2px solid rgb(172, 172, 172);
-    background-color: transparent;
-    border-radius: 10px;
-    font-size: 1.2rem;
-    padding: 5px;
-    flex: 1;
-}
-.right input:focus{
-    outline: none;
-}
+    .right-bottom input {
+        appearance: none;
+        border: 2px solid rgb(172, 172, 172);
+        background-color: transparent;
+        border-radius: 10px;
+        font-size: 1.2rem;
+        padding: 5px;
+        flex: 1;
+    }
 
-.right button:focus {
+.right input:focus {
     outline: none;
 }
 
@@ -141,57 +150,46 @@ body{
     border-radius: 10px;
 }
 
-.right-bottom button:hover {
+    .right-bottom button:hover {
+        cursor: pointer;
+    }
+
+.buttons i {
     cursor: pointer;
 }
 
-.buttons i{
-    cursor: pointer;
-}
-
-.right-center{
+.right-center {
     height: 70%;
     background-color: rgb(184, 179, 192);
     display: flex;
     flex-direction: column;
+    overflow-y: auto;
+    padding-bottom: 10px;
 }
 
-.message-container{
+.message-container {
     margin: 10px 10px 0 10px;
 }
 
-.message.they{
-    padding: 8px 10px 10px 10px;
+.message.they {
+    padding: 10px;
     border-radius: 10px;
-    background-color:  rgb(223, 223, 240);
-
+    background-color: rgb(223, 223, 240);
 }
 
-.message.me{
-    padding: 8px 10px 10px 10px;
+.message.me {
+    padding: 10px;
     border-radius: 10px;
     background-color: rgb(85, 85, 119);
     color: whitesmoke;
 }
 
-.message-container.me{
+.message-container.me {
     display: flex;
     justify-content: end;
 }
 
-.message-container.they{
+.message-container.they {
     display: flex;
     justify-content: start;
 }
-
-
-/*gpt recoendation:*/
-.badge {
-    color: red;
-    font-size: 0.7rem;
-    border-radius: 50%;
-    padding: 4px 6px;
-    margin-left: auto;
-}
-/*gpt recoendation:*/
-
