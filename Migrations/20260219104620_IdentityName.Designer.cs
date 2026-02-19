@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -9,9 +10,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace smsChat_Back.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260219104620_IdentityName")]
+    partial class IdentityName
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "10.0.3");
@@ -82,39 +85,6 @@ namespace smsChat_Back.Migrations
                         .HasDatabaseName("UserNameIndex");
 
                     b.ToTable("AspNetUsers", (string)null);
-                });
-
-            modelBuilder.Entity("Mensagem", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
-
-                    b.Property<DateTime>("DataEnvio")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("DeUserId")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.Property<bool>("Lida")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<string>("ParaUserId")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("Texto")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("DeUserId");
-
-                    b.HasIndex("ParaUserId");
-
-                    b.ToTable("Mensagens");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -243,25 +213,6 @@ namespace smsChat_Back.Migrations
                     b.HasKey("UserId", "LoginProvider", "Name");
 
                     b.ToTable("AspNetUserTokens", (string)null);
-                });
-
-            modelBuilder.Entity("Mensagem", b =>
-                {
-                    b.HasOne("ApplicationUser", "DeUser")
-                        .WithMany()
-                        .HasForeignKey("DeUserId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("ApplicationUser", "ParaUser")
-                        .WithMany()
-                        .HasForeignKey("ParaUserId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.Navigation("DeUser");
-
-                    b.Navigation("ParaUser");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

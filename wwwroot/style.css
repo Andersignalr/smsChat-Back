@@ -68,8 +68,7 @@ body{
     background-color: rgb(172, 168, 177);
 }
 
-/* apenas para testes */
-.contact-area:first-of-type{
+.contact-area.selected{
     background-color: rgb(172, 168, 177);
 } 
 
@@ -184,3 +183,15 @@ body{
     display: flex;
     justify-content: start;
 }
+
+
+/*gpt recoendation:*/
+.badge {
+    color: red;
+    font-size: 0.7rem;
+    border-radius: 50%;
+    padding: 4px 6px;
+    margin-left: auto;
+}
+/*gpt recoendation:*/
+

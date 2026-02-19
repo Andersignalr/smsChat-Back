@@ -22,7 +22,7 @@ async function registrar() {
         }
 
         msg.innerText = "Registrado com sucesso!";
-        window.location.href = "chat.html";
+        window.location.href = "index.html";
 
     } catch (err) {
         console.error(err);
@@ -50,7 +50,7 @@ async function login() {
             return;
         }
 
-        window.location.href = "chat.html";
+        window.location.href = "index.html";
 
     } catch (err) {
         console.error(err);
