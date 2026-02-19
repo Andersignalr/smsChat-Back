@@ -139,6 +139,30 @@ connection.on("ReceberMensagemPrivada", function (dados) {
     chatArea.scrollTop = chatArea.scrollHeight;
 });
 
+connection.on("MensagensCarregadas", function (mensagens) {
+
+    const chatArea = document.querySelector(".right-center");
+    chatArea.innerHTML = "";
+
+    mensagens.forEach(m => {
+
+        const isMe = m.deUserId === meuUserId;
+
+        const container = document.createElement("div");
+        container.classList.add("message-container");
+        container.classList.add(isMe ? "me" : "they");
+
+        const message = document.createElement("div");
+        message.classList.add("message");
+        message.classList.add(isMe ? "me" : "they");
+        message.innerText = m.texto;
+
+        container.appendChild(message);
+        chatArea.appendChild(container);
+    });
+
+    chatArea.scrollTop = chatArea.scrollHeight;
+});
 
 
 
