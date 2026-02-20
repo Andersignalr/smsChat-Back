@@ -1,4 +1,5 @@
-﻿const API_URL = "https://localhost:7281/auth";
+﻿//const API_URL = "https://localhost:7281/auth";
+const API_URL = "http://10.200.14.117/auth";
 
 async function registrar() {
     const nome = document.getElementById("nome").value;

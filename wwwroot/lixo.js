@@ -1,4 +1,5 @@
-﻿document.addEventListener("DOMContentLoaded", function () {
+﻿
+document.addEventListener("DOMContentLoaded", function() {
 
     const input = document.getElementById("fotoInput");
 

@@ -12,7 +12,7 @@ body {
     width: 100vw;
     display: flex;
     padding-left: 20px;
-    justify-content: start;
+    justify-content: center;
     align-items: center;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }

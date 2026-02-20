@@ -1,3 +1,5 @@
+alert("Não sei se sabe mas... está em fase de testes... pagina de login: login.html, registro: register.html, upload de foto: upload.html");
+
 const inputMessage = document.getElementById("message-input");
 
 const contactsArea = document.getElementById("contacts-area");
@@ -9,7 +11,7 @@ let meuUserId = null;
 document.querySelectorAll(".contact-area")
     .forEach(contato => {
 
-        contato.addEventListener("click", function () {
+        contato.addEventListener("click", function() {
             selecionarContato(this);
         });
 
@@ -29,11 +31,38 @@ connection.on("ReceberMensagem", (dados) => {
     console.log(`${dados.usuario}: ${dados.mensagem}`);
 });
 
+connection.on("MeusDados", (eu) => {
+
+    console.log("Meus dados:", eu);
+
+    meuUserId = eu.userId;
+
+    const leftBottom = document.querySelector(".left-bottom");
+
+    leftBottom.innerHTML = `
+        <div class="contact-image">
+            <img class="avatar"
+                 src="${eu.foto ? eu.foto : '/images/default-avatar.png'}">
+        </div>
+        <div class="contact-info">
+            <div class="name">
+                ${eu.nome}
+            </div>
+        </div>
+    `;
+
+    const meuContato = document.querySelector(
+        `.contact-area[data-userid="${meuUserId}"]`
+    );
+
+    if (meuContato) {
+        meuContato.remove(); // remove da lista de contatos
+    }
+});
+
 connection.on("UsuariosOnline", (usuarios) => {
 
     console.log(meuUserId);
-
-    if (!meuUserId) return;
 
     console.log("Online:", usuarios);
 
@@ -51,12 +80,14 @@ connection.on("UsuariosOnline", (usuarios) => {
         if (user.userId === meuUserId) return;
 
         // 🔥 Guardando informação escondida
+        console.log("User Foto: ----"+user.foto);
+        div.dataset.foto = user.foto;
         div.dataset.userid = user.userId;
         div.dataset.nome = user.nome;
 
         div.innerHTML = `
             <div class="contact-image">
-                <img class="avatar" src="${user.foto ?? '/img/default-avatar.png'}">
+                <img class ="avatar" src="${user.foto ?? '/uploads/profile/default-avatar.png'}">
             </div>
             <div class="contact-info">
                 <div class="name">${user.nome}</div>
@@ -66,7 +97,7 @@ connection.on("UsuariosOnline", (usuarios) => {
 
 
         // 🔥 Evento de clique
-        div.addEventListener("click", function () {
+        div.addEventListener("click", function() {
 
             usuarioSelecionadoId = this.dataset.userid;
 
@@ -74,6 +105,10 @@ connection.on("UsuariosOnline", (usuarios) => {
             document.querySelector(".right-center").innerHTML = "";
 
             // Atualiza o topo da conversa
+            document.querySelector(".right-head .contact-image").innerHTML =
+                `<img class="avatar" src="${this.dataset.foto ?? '/uploads/profile/default-avatar.png'}">`;
+                console.warn(`<img class="avatar" src="${this.dataset.foto}">`);
+
             document.querySelector(".right-head .name").innerText =
                 this.dataset.nome;
 
@@ -100,7 +135,7 @@ connection.on("UsuariosOnline", (usuarios) => {
 
 
 
-connection.on("ReceberMensagemPrivada", function (dados) {
+connection.on("ReceberMensagemPrivada", function(dados) {
 
     const conversaAberta =
         (
@@ -146,7 +181,7 @@ connection.on("ReceberMensagemPrivada", function (dados) {
     chatArea.scrollTop = chatArea.scrollHeight;
 });
 
-connection.on("MensagensCarregadas", function (mensagens) {
+connection.on("MensagensCarregadas", function(mensagens) {
 
     const chatArea = document.querySelector(".right-center");
     chatArea.innerHTML = "";
@@ -171,31 +206,9 @@ connection.on("MensagensCarregadas", function (mensagens) {
     chatArea.scrollTop = chatArea.scrollHeight;
 });
 
-connection.on("MeusDados", (eu) => {
-
-    console.log("Meus dados:", eu);
-
-    meuUserId = eu.userId;
-
-    const leftBottom = document.querySelector(".left-bottom");
-
-    leftBottom.innerHTML = `
-        <div class="contact-image">
-            <img class="avatar"
-                 src="${eu.foto ? eu.foto : '/images/default-avatar.png'}">
-        </div>
-        <div class="contact-info">
-            <div class="name">
-                ${eu.nome}
-            </div>
-        </div>
-    `;
-});
 
 
-
-
-inputMessage.addEventListener("keydown", function (event) {
+inputMessage.addEventListener("keydown", function(event) {
     if (event.key === "Enter") {
 
         if (event.shiftKey) return;
