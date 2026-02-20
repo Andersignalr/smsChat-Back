@@ -1,1 +1,1 @@
-<img loading="cTaDoooido" src="./example.png" width="400" height="400"/>
+<img loading="cTaDoooido" src="./example.png" width="900" height="700"/>
