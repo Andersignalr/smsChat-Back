@@ -1,5 +1,3 @@
-alert("Não sei se sabe mas... está em fase de testes... pagina de login: login.html, registro: register.html, upload de foto: upload.html");
-
 const inputMessage = document.getElementById("message-input");
 
 const contactsArea = document.getElementById("contacts-area");
@@ -242,6 +240,8 @@ async function enviar() {
 
 function enviarPrivada() {
     const mensagem = document.getElementById("message-input").value;
+
+    if (!mensagem.trim()) return;
 
     if (!usuarioSelecionadoId) {
         alert("Selecione um contato primeiro");
