@@ -37,6 +37,10 @@ connection.on("MeusDados", (eu) => {
 
     const leftBottom = document.querySelector(".left-bottom");
 
+    leftBottom.dataset.foto = eu.foto;
+    leftBottom.dataset.userid = eu.userId;
+    leftBottom.dataset.nome = eu.nome;
+
     leftBottom.innerHTML = `
         <div class="contact-image">
             <img class="avatar"
@@ -48,6 +52,38 @@ connection.on("MeusDados", (eu) => {
             </div>
         </div>
     `;
+
+    leftBottom.addEventListener("click", function() {
+
+        usuarioSelecionadoId = this.dataset.userid;
+
+        //limpa lista de mensagens
+        document.querySelector(".right-center").innerHTML = "";
+
+        // Atualiza o topo da conversa
+        document.querySelector(".right-head .contact-image").innerHTML =
+            `<img class="avatar" src="${this.dataset.foto ?? '/uploads/profile/default-avatar.png'}">`;
+        console.warn(`<img class="avatar" src="${this.dataset.foto}">`);
+
+        document.querySelector(".right-head .name").innerText =
+            this.dataset.nome;
+
+        document.querySelector(".right-head .status").innerText =
+            "online";
+
+        // Remove seleção anterior
+        document.querySelectorAll(".contact-area")
+            .forEach(c => c.classList.remove("selected"));
+
+        // Marca como selecionado
+        this.classList.add("selected");
+
+        const badge = this.querySelector(".badge");
+        if (badge) badge.remove();
+
+        connection.invoke("CarregarMensagens", usuarioSelecionadoId);
+
+    });
 
     const meuContato = document.querySelector(
         `.contact-area[data-userid="${meuUserId}"]`

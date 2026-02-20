@@ -193,3 +193,7 @@ body {
     display: flex;
     justify-content: start;
 }
+
+.contact, .contact-area, .left-bottom{
+    cursor: pointer;
+}

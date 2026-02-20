@@ -1,3 +1,4 @@
 "impedir mensagens em branco"
 "adicionar links"
+
 DELETE FROM sqlite_sequence WHERE name='SuaTabela';
